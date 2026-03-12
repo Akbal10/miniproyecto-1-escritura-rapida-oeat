@@ -1,0 +1,28 @@
+.root {
+    -fx-background-color: #1a1a2e;
+}
+
+.label {
+    -fx-text-fill: white;
+}
+
+#wordLabel {
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #00d2ff;
+}
+
+#timeLabel {
+    -fx-font-size: 20px;
+    -fx-text-fill: #ff4b2b;
+}
+
+.text-field {
+    -fx-background-color: #16213e;
+    -fx-text-fill: white;
+}
+
+.button {
+    -fx-background-color: #e94560;
+    -fx-text-fill: white;
+}
