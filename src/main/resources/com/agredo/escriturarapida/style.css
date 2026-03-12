@@ -1,22 +1,24 @@
 /* Fondo base */
 .root {
-    -fx-background-image: url("Purple-night-street-view.jpg");
+    -fx-background-image: url("devil.jpg");
     -fx-background-size: cover; /* Para que la imagen cubra toda la ventana */
     -fx-background-position: center;
 }
 
 /* Estilo general de etiquetas */
 .label {
-    -fx-text-fill: #00ffcc; /* Cian Neón */
-    -fx-font-family: "Orbitron", "Segoe UI", sans-serif; /* Si no tienes Orbitron, usará Segoe */
+    -fx-text-fill: #fcee0a; /* Amarillo Cyberpunk/Diablo */
+    -fx-font-size: 14px;
+    -fx-text-transform: uppercase;
 }
 
 /* La palabra reto: Fucsia brillante con efecto de "brillo" */
 #wordLabel {
-    -fx-font-size: 40px;
+    -fx-font-size: 48px;
     -fx-font-weight: bold;
-    -fx-text-fill: #ff00ff; /* Magenta/Fucsia Neón */
-    -fx-effect: dropshadow(gaussian, #ff00ff, 15, 0.5, 0, 0);
+    -fx-text-fill: #fcee0a;
+    /* Efecto de resplandor para que parezca un holograma */
+    -fx-effect: dropshadow(gaussian, rgba(252, 238, 10, 0.6), 20, 0.5, 0, 0);
 }
 
 /* El cronómetro: Amarillo eléctrico */
@@ -29,28 +31,34 @@
 
 /* El campo de texto (TextField) */
 .text-field {
-    -fx-background-color: #1a1a1a;
-    -fx-text-fill: #ffffff;
-    -fx-border-color: #00ffcc;
-    -fx-border-width: 2px;
-    -fx-border-radius: 0; /* Bordes rectos para un look más industrial */
-    -fx-background-radius: 0;
-    -fx-padding: 10;
+    -fx-background-color: rgba(0, 0, 0, 0.8);
+    -fx-text-fill: white;
+    -fx-border-color: #fcee0a;
+    -fx-border-width: 0 0 2 0; /* Solo una línea abajo como en las interfaces modernas */
+    -fx-font-size: 18px;
+    -fx-alignment: center;
 }
-
-/* Botón de inicio estilo Cyber */
-.button {
-    -fx-background-color: transparent;
+.text-field:focused {
+    -fx-border-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, #fcee0a, 10, 0, 0, 0);
+}.button {
+    -fx-background-color: rgba(0, 255, 204, 0.1); /* Fondo translúcido */
     -fx-border-color: #00ffcc;
-    -fx-border-width: 2px;
+    -fx-border-width: 0 0 0 5; /* Solo un borde grueso a la izquierda para un look moderno */
     -fx-text-fill: #00ffcc;
     -fx-font-weight: bold;
+    -fx-padding: 10 20;
     -fx-cursor: hand;
-    -fx-background-radius: 0;
 }
+
 
 .button:hover {
     -fx-background-color: #00ffcc;
-    -fx-text-fill: #050505;
+    -fx-text-fill: #000;
     -fx-effect: dropshadow(gaussian, #00ffcc, 15, 0.5, 0, 0);
+}
+
+#startButton {
+    -fx-graphic: url("destello.png");
+    -fx-graphic-text-gap: 10;
 }
