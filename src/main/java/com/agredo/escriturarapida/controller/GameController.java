@@ -10,6 +10,16 @@ import javafx.util.Duration;
 import com.agredo.escriturarapida.model.IWords;
 import com.agredo.escriturarapida.model.Words;
 
+/**
+ * Controller class for the "Escritura Rápida" game.
+ * This class handles the game logic, manages the countdown timer,
+ * validates user input, and updates the UI components based on level progression.
+ *
+ * @author Tu Nombre (com.agredo)
+ * @version 1.0
+ * @see com.agredo.escriturarapida.model.Words
+ * @see com.agredo.escriturarapida.model.IWords
+ */
 
 public class GameController {
 
@@ -20,12 +30,29 @@ public class GameController {
     @FXML private Label messageLabel;
     @FXML private Button startButton;
 
+    /** * Instance of the word model to fetch random challenges.
+     */
     private final IWords words = new Words();
+    /** * The current word the player must type.
+     */
     private String currentWord = "";
+    /** * Current level progress. Starts at level 1.
+     */
     private int currentLevel = 1;
+    /** * Remaining seconds for the current level.
+     */
     private int timeLeft = 20;
+    /** * The starting time for each level, which decreases as difficulty increases.
+     */
     private int baseTime = 20;
+    /** * Animation timeline used to manage the 1-second interval countdown.
+     */
     private Timeline timer;
+
+    /**
+     * Initializes the game when the Start button is pressed.
+     * Sets the first word and focuses the text field for immediate typing.
+     */
 
     @FXML
     private void handleStart() {
@@ -35,7 +62,14 @@ public class GameController {
         messageLabel.setText("Type it and press Enter");
         inputField.clear();
         inputField.requestFocus();
+
+        setupTimer();
     }
+    /**
+     * Prepares the UI and logic for the next level.
+     * Fetches a new word and restarts the countdown timer.
+     * * @see #setupTimer()
+     */
 
     private void nextLevel() {
         currentWord = words.getRandomWord();
@@ -47,10 +81,16 @@ public class GameController {
         setupTimer();
     }
 
-    private void setupTimer() {
-        if (timer != null) timer.stop(); // Limpiar el anterior
+    /**
+     * Configures and starts the countdown timer for the current level.
+     * The timer decreases every second and triggers automatic validation if it reaches zero.
+     * * @see #handleSubmit()
+     */
 
-        timeLeft = baseTime; // Reiniciar al tiempo actual de la dificultad
+    private void setupTimer() {
+        if (timer != null) timer.stop();
+
+        timeLeft = baseTime;
         timeLabel.setText("Time: " + timeLeft + "s");
 
         timer = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
@@ -59,42 +99,61 @@ public class GameController {
 
             if (timeLeft <= 0) {
                 timer.stop();
-                handleSubmit(); // HU-2: Validación automática al llegar a cero
+                handleSubmit();
             }
         }));
         timer.setCycleCount(Timeline.INDEFINITE);
-        timer.play(); // ¡Sin esto el reloj no se mueve!
+        timer.play();
     }
+
+    /**
+     * Validates the player's typed input against the target word.
+     * If correct, the player wins the level. If incorrect or time is up, the game resets.
+     * * @see #processWin()
+     * @see #resetGame()
+     */
+
     @FXML
     private void handleSubmit() {
         String typed = inputField.getText();
 
-        // Detenemos el timer para que no siga bajando mientras procesamos
+
         if (timer != null) timer.stop();
 
         if (typed != null && typed.equals(currentWord)) {
             messageLabel.setText("✅ ¡Correcto!");
-            processWin(); // Esto maneja el nivel y el nuevo tiempo
+            processWin();
         } else {
-            // HU-4: Mensaje de error claro [cite: 80]
             messageLabel.setText("❌ " + (timeLeft <= 0 ? "Tiempo agotado" : "Incorrecto"));
-            resetGame(); // Según HU-3, si falla vuelve a empezar
+            resetGame();
         }
         inputField.requestFocus();
     }
 
+    /**
+     * Updates the level count and adjusts the game difficulty.
+     * Difficulty increases by reducing base time by 2 seconds every 5 levels,
+     * with a minimum limit of 2 seconds.
+     * * @see #nextLevel()
+     */
+
     private void processWin() {
-        currentLevel++; // HU-3: El nivel incrementa tras cada acierto
+        currentLevel++;
         levelLabel.setText("Level: " + currentLevel);
 
 
         if (currentLevel % 5 == 1 && currentLevel > 1) {
             if (baseTime > 2) {
-                baseTime -= 2; // Reducción de 2 segundos
+                baseTime -= 2;
             }
         }
         nextLevel();
     }
+
+    /**
+     * Resets the game state after a failure.
+     * Disables the game loop and enables the start button for a new session.
+     */
 
     private void resetGame() {
         startButton.setDisable(false);
