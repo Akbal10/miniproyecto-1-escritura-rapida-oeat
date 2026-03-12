@@ -1,28 +1,56 @@
+/* Fondo base */
 .root {
-    -fx-background-color: #1a1a2e;
+    -fx-background-image: url("Purple-night-street-view.jpg");
+    -fx-background-size: cover; /* Para que la imagen cubra toda la ventana */
+    -fx-background-position: center;
 }
 
+/* Estilo general de etiquetas */
 .label {
-    -fx-text-fill: white;
+    -fx-text-fill: #00ffcc; /* Cian Neón */
+    -fx-font-family: "Orbitron", "Segoe UI", sans-serif; /* Si no tienes Orbitron, usará Segoe */
 }
 
+/* La palabra reto: Fucsia brillante con efecto de "brillo" */
 #wordLabel {
-    -fx-font-size: 30px;
+    -fx-font-size: 40px;
     -fx-font-weight: bold;
-    -fx-text-fill: #00d2ff;
+    -fx-text-fill: #ff00ff; /* Magenta/Fucsia Neón */
+    -fx-effect: dropshadow(gaussian, #ff00ff, 15, 0.5, 0, 0);
 }
 
+/* El cronómetro: Amarillo eléctrico */
 #timeLabel {
-    -fx-font-size: 20px;
-    -fx-text-fill: #ff4b2b;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffee00;
+    -fx-effect: dropshadow(one-pass-box, #ffee00, 10, 0, 0, 0);
 }
 
+/* El campo de texto (TextField) */
 .text-field {
-    -fx-background-color: #16213e;
-    -fx-text-fill: white;
+    -fx-background-color: #1a1a1a;
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #00ffcc;
+    -fx-border-width: 2px;
+    -fx-border-radius: 0; /* Bordes rectos para un look más industrial */
+    -fx-background-radius: 0;
+    -fx-padding: 10;
 }
 
+/* Botón de inicio estilo Cyber */
 .button {
-    -fx-background-color: #e94560;
-    -fx-text-fill: white;
+    -fx-background-color: transparent;
+    -fx-border-color: #00ffcc;
+    -fx-border-width: 2px;
+    -fx-text-fill: #00ffcc;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-background-radius: 0;
+}
+
+.button:hover {
+    -fx-background-color: #00ffcc;
+    -fx-text-fill: #050505;
+    -fx-effect: dropshadow(gaussian, #00ffcc, 15, 0.5, 0, 0);
 }
