@@ -12,14 +12,38 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 
+/**
+ * Represents the main stage of the game.
+ *
+ * <p>This class is responsible for loading the main FXML view,
+ * creating the scene, configuring the application window,
+ * and applying the visual background style.</p>
+ *
+ * <p>The stage uses a dark fantasy themed background with a semi-transparent
+ * dark overlay to improve readability of the interface elements.</p>
+ *
+ * @author Omar Agredo
+ * @version 1.0
+ */
 public class GameStage extends Stage implements IGameStage {
 
+    /** Root node loaded from the FXML file. */
     private Parent root;
 
+    /**
+     * Creates the main game stage and loads its content.
+     */
     public GameStage() {
         loadStage();
     }
 
+    /**
+     * Loads the FXML layout, creates the scene,
+     * and configures the main window properties.
+     *
+     * <p>This method sets the title, scene size,
+     * and prevents the window from being resizable.</p>
+     */
     @Override
     public void loadStage() {
         try {
@@ -41,6 +65,18 @@ public class GameStage extends Stage implements IGameStage {
         }
     }
 
+    /**
+     * Applies the visual background style to the root container.
+     *
+     * <p>The background consists of:</p>
+     * <ul>
+     *     <li>A centered fantasy-themed background image</li>
+     *     <li>A dark semi-transparent overlay to improve contrast</li>
+     * </ul>
+     *
+     * <p>If the root node is not a {@link Region}, or if the image
+     * cannot be found, the method exits safely and prints an error message.</p>
+     */
     @Override
     public void applyStyles() {
         if (!(root instanceof Region region)) {

@@ -11,49 +11,78 @@ import com.agredo.escriturarapida.model.IWords;
 import com.agredo.escriturarapida.model.Words;
 
 /**
- * Controller class for the "Escritura Rápida" game.
- * This class handles the game logic, manages the countdown timer,
- * validates user input, and updates the UI components based on level progression.
+ * Main controller for the "Escritura Rápida" game.
+ *
+ * <p>This class manages the entire game flow:
+ * <ul>
+ *     <li>Game start and reset</li>
+ *     <li>Level progression</li>
+ *     <li>Countdown timer logic</li>
+ *     <li>User input validation</li>
+ *     <li>UI updates and styling</li>
+ * </ul>
+ *
+ * <p>The difficulty increases dynamically by reducing the available time
+ * every 5 levels, forcing the player to react faster.</p>
+ *
+ * <p>The game follows a trial-based system inspired by dark fantasy themes,
+ * where the player must survive typing challenges.</p>
  *
  * @author Omar Agredo
  * @version 1.0
  * @see com.agredo.escriturarapida.model.Words
  * @see com.agredo.escriturarapida.model.IWords
  */
-
 public class GameController {
 
+    /** Displays the current level/trial. */
     @FXML private Label levelLabel;
+
+    /** Displays remaining time. */
     @FXML private Label timeLabel;
+
+    /** Displays the word the player must type. */
     @FXML private Label wordLabel;
+
+    /** Input field where the player types the word. */
     @FXML private TextField inputField;
+
+    /** Displays feedback messages (info, success, error). */
     @FXML private Label messageLabel;
+
+    /** Button used to start the game. */
     @FXML private Button startButton;
 
-    /** * Instance of the word model to fetch random challenges.
-     */
+    /** Word provider (model). Handles vocabulary selection by difficulty. */
     private final IWords words = new Words();
-    /** * The current word the player must type.
-     */
+
+    /** Current target word that the player must type. */
     private String currentWord = "";
-    /** * Current level progress. Starts at level 1.
-     */
+
+    /** Current level (starts at 1). */
     private int currentLevel = 1;
-    /** * Remaining seconds for the current level.
-     */
+
+    /** Remaining time for the current level (seconds). */
     private int timeLeft = 20;
-    /** * The starting time for each level, which decreases as difficulty increases.
+
+    /**
+     * Base time for each level.
+     * This value decreases as difficulty increases.
      */
     private int baseTime = 20;
-    /** * Animation timeline used to manage the 1-second interval countdown.
+
+    /**
+     * Timeline used as a game loop for the countdown timer.
+     * Executes every second.
      */
     private Timeline timer;
 
     /**
-     * Initializes the game when the Start button is pressed.
-     * Sets the first word and focuses the text field for immediate typing.
+     * Starts a new game session.
+     *
+     * <p>Initializes level, resets time, loads the first word,
+     * enables input, and starts the countdown.</p>
      */
-
     @FXML
     private void handleStart() {
         startButton.setDisable(true);
@@ -75,11 +104,13 @@ public class GameController {
     }
 
     /**
-     * Prepares the UI and logic for the next level.
-     * Fetches a new word and restarts the countdown timer.
-     * * @see #setupTimer()
+     * Prepares the next level.
+     *
+     * <p>Loads a new word, resets input field, updates UI messages,
+     * and restarts the timer.</p>
+     *
+     * @see #setupTimer()
      */
-
     private void nextLevel() {
         currentWord = words.getWordByLevel(currentLevel);
         wordLabel.setText(currentWord);
@@ -95,11 +126,13 @@ public class GameController {
     }
 
     /**
-     * Configures and starts the countdown timer for the current level.
-     * The timer decreases every second and triggers automatic validation if it reaches zero.
-     * * @see #handleSubmit()
+     * Initializes and starts the countdown timer.
+     *
+     * <p>The timer decreases every second. When it reaches zero,
+     * the system automatically validates the input.</p>
+     *
+     * @see #handleSubmit()
      */
-
     private void setupTimer() {
         if (timer != null) timer.stop();
 
@@ -122,12 +155,22 @@ public class GameController {
     }
 
     /**
-     * Validates the player's typed input against the target word.
-     * If correct, the player wins the level. If incorrect or time is up, the game resets.
-     * * @see #processWin()
+     * Validates the user's input.
+     *
+     * <p>If the typed word matches the target word:
+     * <ul>
+     *     <li>Player wins the level</li>
+     *     <li>Progresses to next level</li>
+     * </ul>
+     *
+     * <p>If incorrect or time runs out:
+     * <ul>
+     *     <li>Game resets</li>
+     * </ul>
+     *
+     * @see #processWin()
      * @see #resetGame()
      */
-
     @FXML
     private void handleSubmit() {
         String typed = inputField.getText();
@@ -137,17 +180,20 @@ public class GameController {
         if (typed != null && typed.equals(currentWord)) {
             messageLabel.setText("You survive this trial.");
             setSuccessMessageStyle();
+
             wordLabel.setStyle("""
-    -fx-text-fill: #22c55e;
-    -fx-font-size: 32px;
-    -fx-font-weight: bold;
-    -fx-effect: dropshadow(gaussian, rgba(34,197,94,0.45), 12, 0.4, 0, 0);
-""");
+                -fx-text-fill: #22c55e;
+                -fx-font-size: 32px;
+                -fx-font-weight: bold;
+                -fx-effect: dropshadow(gaussian, rgba(34,197,94,0.45), 12, 0.4, 0, 0);
+            """);
+
             processWin();
         } else {
             messageLabel.setText(timeLeft <= 0
                     ? "The Abyss Has Claimed You."
                     : "You Failed the Trial.");
+
             setErrorMessageStyle();
             resetGame();
         }
@@ -156,14 +202,14 @@ public class GameController {
     }
 
     /**
-     * Updates the level count and adjusts the game difficulty.
-     * Difficulty increases by reducing base time by 2 seconds every 5 levels,
-     * with a minimum limit of 2 seconds.
-     * * @see #nextLevel()
+     * Handles level progression after a successful attempt.
+     *
+     * <p>Every 5 levels, the available time is reduced by 2 seconds
+     * to increase difficulty. Minimum time is capped at 2 seconds.</p>
+     *
+     * @see #nextLevel()
      */
-
     private void processWin() {
-
         currentLevel++;
 
         levelLabel.setText("Level: " + currentLevel);
@@ -175,9 +221,11 @@ public class GameController {
         nextLevel();
     }
 
-
     /**
-     * Resets the full game state after a failure.
+     * Resets the entire game state after failure.
+     *
+     * <p>Stops timer, resets variables, disables input,
+     * and restores initial UI state.</p>
      */
     private void resetGame() {
 
@@ -203,6 +251,12 @@ public class GameController {
         setDefaultWordStyle();
     }
 
+    /**
+     * Initializes the UI when the scene is loaded.
+     *
+     * <p>Sets default texts, disables input,
+     * and applies initial styles.</p>
+     */
     @FXML
     public void initialize() {
         inputField.setDisable(true);
@@ -215,30 +269,30 @@ public class GameController {
         applyInitialStyles();
 
         startButton.setOnMouseEntered(e -> startButton.setStyle("""
-    -fx-background-color: rgba(212,175,55,0.15);
-    -fx-border-color: #d4af37;
-    -fx-border-radius: 8;
-    -fx-background-radius: 8;
-    -fx-text-fill: #f5deb3;
-    -fx-padding: 6 20 6 20;
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-"""));
+            -fx-background-color: rgba(212,175,55,0.15);
+            -fx-border-color: #d4af37;
+            -fx-border-radius: 8;
+            -fx-background-radius: 8;
+            -fx-text-fill: #f5deb3;
+            -fx-padding: 6 20 6 20;
+            -fx-font-size: 14px;
+            -fx-font-weight: bold;
+        """));
 
         startButton.setOnMouseExited(e -> startButton.setStyle("""
-    -fx-background-color: transparent;
-    -fx-border-color: #d4af37;
-    -fx-border-radius: 8;
-    -fx-background-radius: 8;
-    -fx-text-fill: #d4af37;
-    -fx-padding: 6 20 6 20;
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-"""));
+            -fx-background-color: transparent;
+            -fx-border-color: #d4af37;
+            -fx-border-radius: 8;
+            -fx-background-radius: 8;
+            -fx-text-fill: #d4af37;
+            -fx-padding: 6 20 6 20;
+            -fx-font-size: 14px;
+            -fx-font-weight: bold;
+        """));
     }
 
     /**
-     * Applies the initial visual styles of the game components.
+     * Applies default styles when the game loads.
      */
     private void applyInitialStyles() {
         setDefaultWordStyle();
@@ -247,7 +301,13 @@ public class GameController {
     }
 
     /**
-     * Updates the timer label color depending on the remaining time.
+     * Updates timer color depending on urgency.
+     *
+     * <ul>
+     *     <li>Red → critical (≤5s)</li>
+     *     <li>Orange → warning (≤10s)</li>
+     *     <li>Yellow → normal</li>
+     * </ul>
      */
     private void updateTimeStyle() {
         String color;
@@ -261,56 +321,48 @@ public class GameController {
         }
 
         timeLabel.setStyle("""
-        -fx-text-fill: %s;
-        -fx-font-size: 16px;
-        -fx-font-weight: bold;
-    """.formatted(color));
+            -fx-text-fill: %s;
+            -fx-font-size: 16px;
+            -fx-font-weight: bold;
+        """.formatted(color));
     }
 
-    /**
-     * Applies the info style to the message label.
-     */
+    /** Applies neutral/info style to messages. */
     private void setInfoMessageStyle() {
         messageLabel.setStyle("""
-        -fx-text-fill: #9ca3af;
-        -fx-font-size: 14px;
-        -fx-padding: 10;
-    """);
+            -fx-text-fill: #9ca3af;
+            -fx-font-size: 14px;
+            -fx-padding: 10;
+        """);
     }
 
-    /**
-     * Applies the success style to the message label.
-     */
+    /** Applies success style to messages. */
     private void setSuccessMessageStyle() {
         messageLabel.setStyle("""
-        -fx-text-fill: #22c55e;
-        -fx-font-size: 14px;
-        -fx-font-weight: bold;
-        -fx-padding: 10;
-    """);
+            -fx-text-fill: #22c55e;
+            -fx-font-size: 14px;
+            -fx-font-weight: bold;
+            -fx-padding: 10;
+        """);
     }
 
-    /**
-     * Applies the error style to the message label.
-     */
+    /** Applies error style to messages. */
     private void setErrorMessageStyle() {
         messageLabel.setStyle("""
-        -fx-text-fill: #ef4444;
-        -fx-font-size: 14px;
-        -fx-font-weight: bold;
-        -fx-padding: 10;
-    """);
+            -fx-text-fill: #ef4444;
+            -fx-font-size: 14px;
+            -fx-font-weight: bold;
+            -fx-padding: 10;
+        """);
     }
 
-    /**
-     * Applies the default style to the central word label.
-     */
+    /** Applies default visual style to the main word. */
     private void setDefaultWordStyle() {
         wordLabel.setStyle("""
-        -fx-text-fill: #f4c542;
-        -fx-font-size: 28px;
-        -fx-font-weight: bold;
-        -fx-effect: dropshadow(gaussian, rgba(244,197,66,0.35), 14, 0.35, 0, 0);
-    """);
+            -fx-text-fill: #f4c542;
+            -fx-font-size: 28px;
+            -fx-font-weight: bold;
+            -fx-effect: dropshadow(gaussian, rgba(244,197,66,0.35), 14, 0.35, 0, 0);
+        """);
     }
 }

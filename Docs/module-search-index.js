@@ -1,0 +1,1 @@
+moduleSearchIndex = [{"l":"com.agredo.escriturarapida"}];updateSearchResults();

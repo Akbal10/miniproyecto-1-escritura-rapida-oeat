@@ -5,7 +5,13 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 /**
- * Main class of the application.
+ * Entry point of the "Escritura Rápida" application.
+ *
+ * <p>This class launches the JavaFX application and initializes
+ * the main game window using {@link GameStage}.</p>
+ *
+ * <p>It acts as the bridge between the JavaFX runtime and
+ * the custom game stage implementation.</p>
  *
  * @author Omar Agredo
  * @version 1.0
@@ -15,7 +21,10 @@ public class Main extends Application {
     /**
      * Starts the JavaFX application.
      *
-     * @param stage primary stage provided by JavaFX
+     * <p>This method is automatically called by the JavaFX runtime.
+     * It creates and displays the main game stage.</p>
+     *
+     * @param stage the primary stage provided by JavaFX (not used directly)
      */
     @Override
     public void start(Stage stage) {
@@ -24,7 +33,9 @@ public class Main extends Application {
     }
 
     /**
-     * Main method of the program.
+     * Main method of the application.
+     *
+     * <p>Launches the JavaFX runtime environment.</p>
      *
      * @param args command-line arguments
      */

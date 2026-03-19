@@ -1,0 +1,5 @@
+module:com.agredo.escriturarapida
+com.agredo.escriturarapida
+com.agredo.escriturarapida.controller
+com.agredo.escriturarapida.model
+com.agredo.escriturarapida.view
